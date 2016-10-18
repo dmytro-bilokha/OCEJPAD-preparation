@@ -3,9 +3,9 @@ package bilokhado;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class HelloJpa {
 
@@ -13,25 +13,12 @@ public class HelloJpa {
 
     public static void main(String[] cmdLineParams) {
         System.out.println("Hello World");
+        EntityManagerFactory emf =
+                Persistence.createEntityManagerFactory("hellojpa-se");
+        EntityManager em = emf.createEntityManager();
         logger.info("Hello World logged");
-/*        try {
-            Class.forName("org.h2.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-        Connection conn = null;
-        try {
-            conn = DriverManager.
-                    getConnection("jdbc:mysql://localhost:3306/OCEJPAD?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw", "jpa", "jpa");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        // add application code here
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        em.close();
+        emf.close();
     }
 
 }

@@ -1,0 +1,20 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="hellojpa-se" transaction-type="RESOURCE_LOCAL">
+
+        <class>bilokhado.Employee</class>
+
+        <properties>
+<!--            <property name="javax.persistence.jdbc.driver"
+                      value="org.apache.derby.jdbc.ClientDriver"/>-->
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/OCEJPAD?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Warsaw"/>
+            <property name="javax.persistence.jdbc.user" value="jpa"/>
+            <property name="javax.persistence.jdbc.password" value="jpa"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>
+
