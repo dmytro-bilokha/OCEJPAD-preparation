@@ -12,13 +12,25 @@ public class HelloJpa {
     private static final Logger logger = LoggerFactory.getLogger(HelloJpa.class);
 
     public static void main(String[] cmdLineParams) {
-        System.out.println("Hello World");
-        EntityManagerFactory emf =
-                Persistence.createEntityManagerFactory("hellojpa-se");
-        EntityManager em = emf.createEntityManager();
-        logger.info("Hello World logged");
-        em.close();
-        emf.close();
+
+        EntityManagerFactory emf = null;
+        EntityManager em = null;
+        try {
+            emf = Persistence.createEntityManagerFactory("hellojpa-se");
+            em = emf.createEntityManager();
+            Employee employee = new Employee();
+            employee.setId(1);
+            employee.setFirstName("Test1");
+            employee.setLastName("Test2");
+            em.getTransaction().begin();
+            em.persist(employee);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null)
+                em.close();
+            if (emf != null)
+                emf.close();
+        }
     }
 
 }
