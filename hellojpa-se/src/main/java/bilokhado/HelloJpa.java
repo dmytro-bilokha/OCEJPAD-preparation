@@ -14,15 +14,15 @@ public class HelloJpa {
     public static void main(String[] cmdLineParams) {
         System.out.println("Hello World");
         logger.info("Hello World logged");
-        try {
+/*        try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         Connection conn = null;
         try {
             conn = DriverManager.
-                    getConnection("jdbc:h2:~/test", "sa", "");
+                    getConnection("jdbc:mysql://localhost:3306/OCEJPAD?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw", "jpa", "jpa");
         } catch (SQLException e) {
             e.printStackTrace();
         }
