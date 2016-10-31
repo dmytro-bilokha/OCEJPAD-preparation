@@ -4316,3 +4316,8 @@ INSERT INTO country VALUES ('YUG','Yugoslavia','Europe','Southern Europe',102173
 INSERT INTO country VALUES ('ZAF','South Africa','Africa','Southern Africa',1221037.00,1910,40377000,51.1,116729.00,129092.00,'South Africa','Republic','Thabo Mbeki',716,'ZA');
 INSERT INTO country VALUES ('ZMB','Zambia','Africa','Eastern Africa',752618.00,1964,9169000,37.2,3377.00,3922.00,'Zambia','Republic','Frederick Chiluba',3162,'ZM');
 INSERT INTO country VALUES ('ZWE','Zimbabwe','Africa','Eastern Africa',390757.00,1980,11669000,37.8,5951.00,8670.00,'Zimbabwe','Republic','Robert G. Mugabe',4068,'ZW');
+
+ALTER TABLE city ADD FOREIGN KEY (CountryCode) REFERENCES country(Code);
+ALTER TABLE country ADD FOREIGN KEY (Capital) REFERENCES city(ID);
+ALTER TABLE countrylanguage ADD FOREIGN KEY (CountryCode) REFERENCES country(Code);
+

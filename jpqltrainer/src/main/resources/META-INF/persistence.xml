@@ -18,7 +18,7 @@
             <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/sql-script/create.sql" />
             <property name="javax.persistence.schema-generation.drop-script-source" value="META-INF/sql-script/drop.sql" />
             <property name="javax.persistence.sql-load-script-source" value="META-INF/sql-script/load.sql" />
-            <!-- <property key="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" /> -->
+            <property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />
             <property name="hibernate.show_sql" value="true" />
         </properties>
 
