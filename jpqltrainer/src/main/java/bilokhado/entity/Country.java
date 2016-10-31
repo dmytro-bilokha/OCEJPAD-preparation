@@ -3,6 +3,8 @@ package bilokhado.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -52,8 +54,9 @@ public class Country {
     @Column(name = "HeadOfState")
     private String headOfState;
 
-    @Column(name = "Capital")
-    private Integer capital;
+    @OneToOne
+    @JoinColumn(name = "Capital")
+    private City capital;
 
     @Column(name = "Code2")
     private String shortCode;
@@ -174,11 +177,11 @@ public class Country {
         this.headOfState = headOfState;
     }
 
-    public Integer getCapital() {
+    public City getCapital() {
         return capital;
     }
 
-    public void setCapital(Integer capital) {
+    public void setCapital(City capital) {
         this.capital = capital;
     }
 
