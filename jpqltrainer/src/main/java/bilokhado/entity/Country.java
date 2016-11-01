@@ -4,8 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.List;
 
 /**
  * Class represents the Country entity
@@ -61,6 +63,9 @@ public class Country {
     @Column(name = "Code2")
     private String shortCode;
 
+    @OneToMany(mappedBy = "country")
+    private List<City> cities;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Country[");
@@ -69,6 +74,7 @@ public class Country {
         sb.append(", population=").append(population);
         sb.append(", lifeExpectancy=").append(lifeExpectancy);
         sb.append(", gnp=").append(gnp);
+        sb.append(", numOfCities=").append(cities == null ? "NULL" : cities.size());
         sb.append(']');
         return sb.toString();
     }
@@ -191,6 +197,14 @@ public class Country {
 
     public void setShortCode(String shortCode) {
         this.shortCode = shortCode;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 
 }
