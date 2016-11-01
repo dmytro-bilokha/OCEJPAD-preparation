@@ -4,10 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class represents the Country entity
@@ -65,6 +67,10 @@ public class Country {
 
     @OneToMany(mappedBy = "country")
     private List<City> cities;
+
+    @OneToMany(mappedBy = "country")
+    @MapKeyColumn(name = "Language")
+    private Map<String, Language> languageMap;
 
     @Override
     public String toString() {
@@ -205,6 +211,14 @@ public class Country {
 
     public void setCities(List<City> cities) {
         this.cities = cities;
+    }
+
+    public Map<String, Language> getLanguageMap() {
+        return languageMap;
+    }
+
+    public void setLanguageMap(Map<String, Language> languageMap) {
+        this.languageMap = languageMap;
     }
 
 }
