@@ -3,6 +3,8 @@ package bilokhado.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -14,23 +16,24 @@ public class City {
 
     @Id
     @Column(name = "ID")
-    int id;
+    private int id;
 
-    @Column(name = "CountryCode")
-    String countryCode;
+    @ManyToOne
+    @JoinColumn(name = "CountryCode")
+    private Country country;
 
     @Column(name = "Name")
-    String name;
+    private String name;
 
     @Column(name = "District")
-    String district;
+    private String district;
 
     @Column(name = "Population")
-    int population;
+    private int population;
 
     @Override
     public String toString() {
-        return "City[" + "id=" + id + ", countryCode='" + countryCode + '\'' + ", name='" + name + '\'' + ']';
+        return "City[" + "id=" + id + ", name='" + name + '\'' + " , population=" + population + ']';
     }
 
     public int getId() {
@@ -41,12 +44,12 @@ public class City {
         this.id = id;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getName() {
