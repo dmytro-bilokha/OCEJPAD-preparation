@@ -38,16 +38,16 @@ public class Country {
     private Short independencyYear;
 
     @Column(name = "Population")
-    private int population;
+    private Integer population;
 
     @Column(name = "LifeExpectancy")
-    private float lifeExpectancy;
+    private Float lifeExpectancy;
 
     @Column(name = "GNP")
-    private double gnp;
+    private Double gnp;
 
     @Column(name = "GNPOld")
-    private double oldGnp;
+    private Double oldGnp;
 
     @Column(name = "LocalName")
     private String localName;
@@ -133,35 +133,35 @@ public class Country {
         this.independencyYear = independencyYear;
     }
 
-    public int getPopulation() {
+    public Integer getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(Integer population) {
         this.population = population;
     }
 
-    public float getLifeExpectancy() {
+    public Float getLifeExpectancy() {
         return lifeExpectancy;
     }
 
-    public void setLifeExpectancy(float lifeExpectancy) {
+    public void setLifeExpectancy(Float lifeExpectancy) {
         this.lifeExpectancy = lifeExpectancy;
     }
 
-    public double getGnp() {
+    public Double getGnp() {
         return gnp;
     }
 
-    public void setGnp(double gnp) {
+    public void setGnp(Double gnp) {
         this.gnp = gnp;
     }
 
-    public double getOldGnp() {
+    public Double getOldGnp() {
         return oldGnp;
     }
 
-    public void setOldGnp(double oldGnp) {
+    public void setOldGnp(Double oldGnp) {
         this.oldGnp = oldGnp;
     }
 
@@ -220,5 +220,4 @@ public class Country {
     public void setLanguageMap(Map<String, Language> languageMap) {
         this.languageMap = languageMap;
     }
-
 }
