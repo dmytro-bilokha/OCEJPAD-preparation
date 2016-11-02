@@ -1,6 +1,9 @@
 package bilokhado.entity;
 
+import bilokhado.converter.BooleanCharacterConverter;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -26,7 +29,8 @@ public class Language {
     private String name;
 
     @Column(name = "IsOfficial")
-    private Character official;
+    @Convert(converter = BooleanCharacterConverter.class)
+    private Boolean official;
 
     @Column(name = "Percentage")
     private float percentage;
@@ -58,11 +62,11 @@ public class Language {
         this.name = name;
     }
 
-    public Character getOfficial() {
+    public Boolean getOfficial() {
         return official;
     }
 
-    public void setOfficial(Character official) {
+    public void setOfficial(Boolean official) {
         this.official = official;
     }
 
