@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/local/bin/java -jar build/libs/jpqltrainer-all-0.1.jar
