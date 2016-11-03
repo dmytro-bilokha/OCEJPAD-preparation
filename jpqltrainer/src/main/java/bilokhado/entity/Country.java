@@ -1,5 +1,7 @@
 package bilokhado.entity;
 
+import bilokhado.enumeration.Continent;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,7 +28,7 @@ public class Country {
     private String name;
 
     @Column(name = "Continent")
-    private String continent;
+    private Continent continent;
 
     @Column(name = "Region")
     private String region;
@@ -76,6 +78,7 @@ public class Country {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Country[");
         sb.append("code='").append(code).append('\'');
+        sb.append(", continent='").append(continent.toString()).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", population=").append(population);
         sb.append(", lifeExpectancy=").append(lifeExpectancy);
@@ -101,11 +104,11 @@ public class Country {
         this.name = name;
     }
 
-    public String getContinent() {
+    public Continent getContinent() {
         return continent;
     }
 
-    public void setContinent(String continent) {
+    public void setContinent(Continent continent) {
         this.continent = continent;
     }
 
