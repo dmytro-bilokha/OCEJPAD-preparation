@@ -18,7 +18,7 @@ public class CriteriaCaseServiceProvider {
      * Static method to get instance of the provider
      * @return provider's object instance
      */
-    public static CriteriaCaseServiceProvider getInstanse() {
+    public static CriteriaCaseServiceProvider getInstance() {
         if (provider == null)
             provider = new CriteriaCaseServiceProvider();
         return provider;

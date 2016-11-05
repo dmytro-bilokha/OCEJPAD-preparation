@@ -29,7 +29,7 @@ public class CriteriaTrainer {
         try {
             emf = Persistence.createEntityManagerFactory("world");
             em = emf.createEntityManager();
-            List<CriteriaCaseService> serviceList = CriteriaCaseServiceProvider.getInstanse().getImplementations();
+            List<CriteriaCaseService> serviceList = CriteriaCaseServiceProvider.getInstance().getImplementations();
             for (CriteriaCaseService service : serviceList) {
                 try {
                     List<? extends Object> criteriaResult = service.getResultWithCriteria(em);
