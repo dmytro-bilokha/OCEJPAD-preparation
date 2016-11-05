@@ -1,7 +1,9 @@
 package bilokhado.criteriatrainer.service.implementation;
 
+import bilokhado.criteriatrainer.model.entity.Country;
 import bilokhado.criteriatrainer.service.CriteriaCaseService;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -9,8 +11,8 @@ import java.util.List;
  */
 public class CriteriaSimpleUseCase implements CriteriaCaseService {
     @Override
-    public List<Object> getResultWithCriteria() {
+    public List<Country> getResultWithCriteria(EntityManager em) {
         System.out.println("Simple use case");
-        return null;
+        return em.createQuery("SELECT c FROM Country c WHERE c.code='UKR'", Country.class).getResultList();
     }
 }

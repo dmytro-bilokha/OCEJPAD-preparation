@@ -4,9 +4,9 @@
              version="2.0">
     <persistence-unit name="world" transaction-type="RESOURCE_LOCAL">
 
-        <class>bilokhado.entity.City</class>
-        <class>bilokhado.entity.Country</class>
-        <class>bilokhado.entity.Language</class>
+        <class>bilokhado.criteriatrainer.model.entity.City</class>
+        <class>bilokhado.criteriatrainer.model.entity.Country</class>
+        <class>bilokhado.criteriatrainer.model.entity.Language</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url"

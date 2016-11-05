@@ -25,7 +25,7 @@ public class JpqlTrainer {
         EntityManagerFactory emf = null;
         EntityManager em = null;
         try {
-            emf = Persistence.createEntityManagerFactory("jpqltrainer");
+            emf = Persistence.createEntityManagerFactory("world");
             em = emf.createEntityManager();
             console.writer().println("Welcome to JPQL Trainer. To exit enter empty query");
             while (true) {
