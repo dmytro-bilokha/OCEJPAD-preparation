@@ -1,0 +1,1 @@
+CREATE TABLE item (id int NOT NULL, PRIMARY KEY (id));
