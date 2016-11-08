@@ -16,6 +16,12 @@ public class Item {
     @Column(name = "id")
     private Integer id;
 
+    public Item() {}
+
+    public Item(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
