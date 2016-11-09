@@ -2,8 +2,10 @@ package bilokhado.transactionexplorer.web;
 
 import bilokhado.transactionexplorer.service.ChainLink;
 import bilokhado.transactionexplorer.service.implementation.BookIdPoolService;
+import bilokhado.transactionexplorer.service.implementation.TransactionMandatoryChainLink;
 import bilokhado.transactionexplorer.service.implementation.TransactionRequiredChainLink;
 import bilokhado.transactionexplorer.service.implementation.TransactionRequiresNewChainLink;
+import bilokhado.transactionexplorer.service.implementation.TransactionSupportsChainLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "ExplorerServlet", urlPatterns = {"/explore"})
 public class ExplorerServlet extends HttpServlet {
@@ -38,6 +41,12 @@ public class ExplorerServlet extends HttpServlet {
     @EJB
     private TransactionRequiresNewChainLink transactionRequiresNewChainLink;
 
+    @EJB
+    private TransactionMandatoryChainLink transactionMandatoryChainLink;
+
+    @EJB
+    private TransactionSupportsChainLink transactionSupportsChainLink;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -46,7 +55,18 @@ public class ExplorerServlet extends HttpServlet {
             int numOfBeans = exploreCase.size();
             int freeId = poolService.bookIdPool(numOfBeans);
             String[][] visibilityMatrix = new String[numOfBeans][];
-            exploreCase.get(0).processChain(freeId, 0, exploreCase, visibilityMatrix);
+            try {
+                exploreCase.get(0).processChain(freeId, 0, exploreCase, visibilityMatrix);
+            } catch (Exception ex) {
+                String chainTitle = exploreCase.stream().map(ChainLink::getType).collect(Collectors.joining(","));
+                LOG.error("During processing chain {} got exception", chainTitle, ex);
+                out.print("<p> During processing chain ");
+                out.print(chainTitle);
+                out.print(" got exception ");
+                out.print(ex);
+                out.print("</p>");
+                continue;
+            }
             //Generate table header
             out.print("<table><thead><tr><th>Bean</th>");
             for (ChainLink bean : exploreCase) {
@@ -67,7 +87,11 @@ public class ExplorerServlet extends HttpServlet {
     }
 
     private List<List<ChainLink>> buildTestBeansMatrix() {
-        ChainLink[] allBeans = new ChainLink[]{transactionRequiredChainLink, transactionRequiresNewChainLink};
+        ChainLink[] allBeans = new ChainLink[]{
+                transactionRequiredChainLink
+                , transactionRequiresNewChainLink
+                , transactionMandatoryChainLink
+                , transactionSupportsChainLink};
         List<List<ChainLink>> result = new ArrayList<>();
         for (ChainLink first : allBeans) {
             for (ChainLink second : allBeans) {

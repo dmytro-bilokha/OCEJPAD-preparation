@@ -55,4 +55,9 @@ public abstract class AbstractChainLink implements ChainLink {
         getEntityManager().persist(new Item(itemId));
     }
 
+    @Override
+    public String toString() {
+        return getType();
+    }
+
 }
