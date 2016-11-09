@@ -25,7 +25,7 @@ public class TransactionRequiresNewChainLink extends AbstractChainLink {
 
     @Override
     public String getType() {
-        return "TransactionRequiresNew";
+        return "REQUIRES_NEW";
     }
 
     @Override

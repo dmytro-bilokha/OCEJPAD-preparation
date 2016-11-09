@@ -2,12 +2,12 @@ package bilokhado.transactionexplorer.web;
 
 import bilokhado.transactionexplorer.service.ChainLink;
 import bilokhado.transactionexplorer.service.implementation.BookIdPoolService;
+import bilokhado.transactionexplorer.service.implementation.TransactionRequiredChainLink;
+import bilokhado.transactionexplorer.service.implementation.TransactionRequiresNewChainLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,63 +16,67 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-@WebServlet(name = "ExplorerServlet", urlPatterns = {"/"})
+@WebServlet(name = "ExplorerServlet", urlPatterns = {"/explore"})
 public class ExplorerServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExplorerServlet.class);
-    private static final List<String> BEAN_NAMES = Collections.unmodifiableList(Arrays.asList(
-            "TransactionRequiredChainLink"
-            , "TransactionRequiresNewChainLink"
-    ));
     private static final String OUTPUT_START = "<!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN'"
         + " 'http://www.w3.org/TR/html4/loose.dtd'>"
             + "<html lang='en'>"
-            + "<head><title>Transaction Explorer</title></head>"
-            + "<body><table><thead><tr><th>Id</th><th>First Name</th><th>Last Name</th></thead>"
-            + "<tbody>";
-    private static final String OUTPUT_END = "</tbody></table></body></html>";
-    private static final String OUTPUT_LINE_TEMPLATE = "<tr><th>%d</th><th></th><th></th></tr>";
+            + "<head><title>Transaction Explorer</title>"
+            + "<link rel='stylesheet' type='text/css' href='resources/table.css' title='Style'></head><body>";
+    private static final String OUTPUT_END = "</body></html>";
 
     @EJB
     private BookIdPoolService poolService;
+
+    @EJB
+    private TransactionRequiredChainLink transactionRequiredChainLink;
+
+    @EJB
+    private TransactionRequiresNewChainLink transactionRequiresNewChainLink;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
         out.println(OUTPUT_START);
-        int freeId = poolService.bookIdPool(1);
-        out.println(String.format(OUTPUT_LINE_TEMPLATE, freeId));
+        for (List<ChainLink> exploreCase : buildTestBeansMatrix()) {
+            int numOfBeans = exploreCase.size();
+            int freeId = poolService.bookIdPool(numOfBeans);
+            String[][] visibilityMatrix = new String[numOfBeans][];
+            exploreCase.get(0).processChain(freeId, 0, exploreCase, visibilityMatrix);
+            //Generate table header
+            out.print("<table><thead><tr><th>Bean</th>");
+            for (ChainLink bean : exploreCase) {
+                out.print(String.format("<th>%s</th>", bean.getType()));
+            }
+            out.println("</tr></thead><tbody>");
+            //Generate table body
+            for (int i = 0; i < numOfBeans; i++) {
+                out.print(String.format("<tr><td>%s</td>", exploreCase.get(i).getType()));
+                for (String visibility : visibilityMatrix[i]) {
+                    out.print(String.format("<td>%s</td>", visibility));
+                }
+                out.println("</tr>");
+            }
+            out.println("</tbody></table><br/>");
+        }
         out.println(OUTPUT_END);
     }
 
     private List<List<ChainLink>> buildTestBeansMatrix() {
-        List<ChainLink> beansList = getBeansList();
+        ChainLink[] allBeans = new ChainLink[]{transactionRequiredChainLink, transactionRequiresNewChainLink};
         List<List<ChainLink>> result = new ArrayList<>();
-        for (ChainLink first : beansList) {
-            for (ChainLink second : beansList) {
-                for (ChainLink third : beansList) {
+        for (ChainLink first : allBeans) {
+            for (ChainLink second : allBeans) {
+                for (ChainLink third : allBeans) {
                     result.add(Arrays.asList(first, second, third));
                 }
             }
         }
         return result;
-    }
-
-    private List<ChainLink> getBeansList() {
-        List<ChainLink> chainList = new ArrayList<>();
-        try {
-            InitialContext context = new InitialContext();
-            for (String name : BEAN_NAMES) {
-                chainList.add((ChainLink) context.lookup("java:/comp/env/ejb/" + name));
-            }
-        } catch (NamingException ex) {
-            LOG.error("Got exception during trying to fill beans list", ex);
-            return Collections.EMPTY_LIST;
-        }
-        return chainList;
     }
 
 }

@@ -25,7 +25,7 @@ public class TransactionRequiredChainLink extends AbstractChainLink {
 
     @Override
     public String getType() {
-        return "TransactionRequired";
+        return "REQUIRED";
     }
 
     @Override
