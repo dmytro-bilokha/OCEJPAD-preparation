@@ -3,6 +3,8 @@ package bilokhado.transactionexplorer.web;
 import bilokhado.transactionexplorer.service.ChainLink;
 import bilokhado.transactionexplorer.service.implementation.BookIdPoolService;
 import bilokhado.transactionexplorer.service.implementation.TransactionMandatoryChainLink;
+import bilokhado.transactionexplorer.service.implementation.TransactionNeverChainLink;
+import bilokhado.transactionexplorer.service.implementation.TransactionNotSupportedChainLink;
 import bilokhado.transactionexplorer.service.implementation.TransactionRequiredChainLink;
 import bilokhado.transactionexplorer.service.implementation.TransactionRequiresNewChainLink;
 import bilokhado.transactionexplorer.service.implementation.TransactionSupportsChainLink;
@@ -32,9 +34,10 @@ public class ExplorerServlet extends HttpServlet {
             + "<link rel='stylesheet' type='text/css' href='resources/table.css' title='Style'></head><body>";
     private static final String OUTPUT_END = "</body></html>";
 
-    @EJB
+    @EJB  //Sevice to book items' id
     private BookIdPoolService poolService;
 
+    //Discovered ejbs injection
     @EJB
     private TransactionRequiredChainLink transactionRequiredChainLink;
 
@@ -46,6 +49,13 @@ public class ExplorerServlet extends HttpServlet {
 
     @EJB
     private TransactionSupportsChainLink transactionSupportsChainLink;
+
+    @EJB
+    private TransactionNotSupportedChainLink transactionNotSupportedChainLink;
+
+    @EJB
+    private TransactionNeverChainLink transactionNeverChainLink;
+    //End of discovered ejbs injection
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -93,7 +103,10 @@ public class ExplorerServlet extends HttpServlet {
                 transactionRequiredChainLink
                 , transactionRequiresNewChainLink
                 , transactionMandatoryChainLink
-                , transactionSupportsChainLink};
+                , transactionSupportsChainLink
+                , transactionNotSupportedChainLink
+                , transactionNeverChainLink
+                };
         List<List<ChainLink>> result = new ArrayList<>();
         for (ChainLink first : allBeans) {
             for (ChainLink second : allBeans) {
