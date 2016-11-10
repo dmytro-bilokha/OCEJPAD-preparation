@@ -68,7 +68,9 @@ public class ExplorerServlet extends HttpServlet {
                 continue;
             }
             //Generate table header
-            out.print("<table><thead><tr><th>Bean</th>");
+            out.print("<table><thead><tr><th>Bean(");
+            out.print(freeId);
+            out.print(")</th>");
             for (ChainLink bean : exploreCase) {
                 out.print(String.format("<th>%s</th>", bean.getType()));
             }

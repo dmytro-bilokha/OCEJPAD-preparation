@@ -5,11 +5,13 @@ import bilokhado.transactionexplorer.service.ChainLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -23,9 +25,17 @@ public class TransactionRequiredChainLink extends AbstractChainLink {
     @PersistenceContext(unitName = "h2mem")
     EntityManager em;
 
+    @Resource(mappedName = "jdbc/h2mem")
+    DataSource dataSource;
+
     @Override
     public String getType() {
         return "REQUIRED";
+    }
+
+    @Override
+    protected DataSource getDataSource() {
+        return dataSource;
     }
 
     @Override
