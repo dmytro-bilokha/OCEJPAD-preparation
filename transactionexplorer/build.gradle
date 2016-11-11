@@ -11,7 +11,7 @@ war {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-def glassfishAutodeploy = '/usr/local/glassfish-4.1/glassfish/domains/domain1/autodeploy'
+def glassfishAsadmin = '/usr/local/glassfish-4.1/glassfish/bin/asadmin'
 
 repositories {
     mavenCentral()
@@ -50,8 +50,12 @@ tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
 }
 
-task deployLocal(type: Copy) {
+task deployGlassFish(type: org.gradle.api.tasks.Exec) {
     dependsOn war
-    from configurations.archives.allArtifacts*.file
-    into glassfishAutodeploy
+    commandLine glassfishAsadmin, 'deploy', '--force=true',
+            '--precompilejsp=true',
+            '--name', war.baseName+':'+war.version,
+            '--contextroot', war.baseName,
+            configurations.archives.artifacts.file[0]
 }
+
