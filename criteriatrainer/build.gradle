@@ -1,6 +1,11 @@
 //noinspection GroovyAssignabilityCheck
 
+plugins {
+  id 'at.comm_unity.gradle.plugins.jpamodelgen' version '1.1.1'
+}
+
 apply plugin: 'java'
+apply plugin: 'at.comm_unity.gradle.plugins.jpamodelgen'
 
 version = '0.1'
 sourceCompatibility = 1.8
@@ -30,6 +35,16 @@ sourceSets {
         }
         resources.srcDir file('src/integration-test/resources')
     }
+    generated {
+        java.srcDir "${buildDir}/generated/src/java/"
+    }
+}
+
+compileJava.options.compilerArgs += ["-proc:none"]
+
+jpaModelgen {
+  library = "org.hibernate:hibernate-jpamodelgen:5.2.3.Final"
+  jpaModelgenSourcesDir = "src/generated/java"
 }
 
 //Task to create Jar with all dependencies
