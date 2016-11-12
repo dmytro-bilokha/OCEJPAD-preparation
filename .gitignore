@@ -15,6 +15,6 @@ hs_err_pid*
 .gradle/
 target/
 build/
-src/generated/
+**/src/generated/
 *.iml
 *.swp
