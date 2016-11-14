@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -72,7 +73,7 @@ public class Country {
     private List<City> cities;
 
     @OneToMany(mappedBy = "country")
-    @MapKeyColumn(name = "Language")
+    @MapKey(name = "name")
     private Map<String, Language> languageMap;
 
     @Override
