@@ -1,3 +1,4 @@
 bilokhado.criteriatrainer.service.implementation.CriteriaSimpleUseCase
 bilokhado.criteriatrainer.service.implementation.OfficialLanguageInCityCase
 bilokhado.criteriatrainer.service.implementation.CountryWhichHasBigCityCase
+bilokhado.criteriatrainer.service.implementation.CountryWithBiggestCityCase
