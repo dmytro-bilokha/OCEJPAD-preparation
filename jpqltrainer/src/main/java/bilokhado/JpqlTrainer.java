@@ -9,8 +9,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.transaction.UserTransaction;
 import java.io.Console;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JpqlTrainer {
 
@@ -45,7 +47,7 @@ public class JpqlTrainer {
                 } else {
                     console.writer().println("Results:");
                     for (int i = 0; i < results.size(); i++) {
-                        console.writer().println(i +": " + results.get(i));
+                        console.writer().println(i +": " + convertResultToString(results.get(i)));
                     }
                 }
             }
@@ -56,6 +58,21 @@ public class JpqlTrainer {
                 emf.close();
 
         }
+    }
+
+    public static String convertResultToString(Object queryResult) {
+        if (queryResult == null)
+            return "null";
+        if (queryResult instanceof String)
+            return (String) queryResult;
+        if (queryResult instanceof Object[]) {
+            Object[] resultArray = (Object[]) queryResult;
+            return Arrays.asList(resultArray)
+                    .stream()
+                    .map(obj -> convertResultToString(obj))
+                    .collect(Collectors.joining(", ", "[", "]"));
+        }
+        return queryResult.toString();
     }
 
 }
