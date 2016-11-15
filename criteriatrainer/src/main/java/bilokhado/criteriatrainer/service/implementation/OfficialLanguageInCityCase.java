@@ -30,10 +30,10 @@ public class OfficialLanguageInCityCase implements CriteriaCaseService {
         Root<Language> rootLanguage = query.from(Language.class);
         Expression joinOn = cb.equal(rootCity.get(City_.country), rootLanguage.get(Language_.country));
         Expression cityIn = rootCity.get(City_.name).in(Arrays.asList("Kyiv", "London", "Washington"));
-        Expression languageOfficail = cb.equal(rootLanguage.get(Language_.official), true);
+        Expression languageOfficial = cb.equal(rootLanguage.get(Language_.official), true);
         query.select(rootLanguage.get(Language_.name))
                 .distinct(true)
-                .where(cb.and(joinOn, cb.and(cityIn, languageOfficail)));
+                .where(cb.and(joinOn, cb.and(cityIn, languageOfficial)));
         return em.createQuery(query).getResultList();
     }
 

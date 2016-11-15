@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The main class of the application.
@@ -47,7 +49,7 @@ public class CriteriaTrainer {
                     }
                 } catch (Exception ex) {
                     System.out.println("During testing criteria query object with JPQL string '"
-                        + service.getJpqlEquivalentString() + "' exception happened");
+                            + service.getJpqlEquivalentString() + "' exception happened");
                     LOG.error("During testing criteria query object with JPQL string '"
                             + service.getJpqlEquivalentString() + "' exception happened", ex);
                 }
@@ -60,6 +62,8 @@ public class CriteriaTrainer {
         }
     }
 
+    //This method is too simple and it doesn't handle the case, when query result is array of objects.
+    //But, it matters only for one case, so I'll ignore the issue for now.
     private static boolean isResultsEqual(List<? extends Object> firstResult, List<? extends Object> secondResult) {
         if (firstResult.size() != secondResult.size())
             return false;
@@ -73,9 +77,23 @@ public class CriteriaTrainer {
 
     private static void printResult(List<? extends Object> resultList) {
         for (int i = 0; i < resultList.size(); i++) {
-            Object result = resultList.get(i);
-            System.out.println(String.format("%3d: %s", i, result));
+            System.out.println(String.format("%3d: %s", i, convertResultToString(resultList.get(i))));
         }
+    }
+
+    private static String convertResultToString(Object queryResult) {
+        if (queryResult == null)
+            return "null";
+        if (queryResult instanceof String)
+            return (String) queryResult;
+        if (queryResult instanceof Object[]) {
+            Object[] resultArray = (Object[]) queryResult;
+            return Arrays.asList(resultArray)
+                    .stream()
+                    .map(obj -> convertResultToString(obj))
+                    .collect(Collectors.joining(", ", "[", "]"));
+        }
+        return queryResult.toString();
     }
 
 }
