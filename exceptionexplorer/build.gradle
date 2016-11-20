@@ -1,0 +1,61 @@
+//noinspection GroovyAssignabilityCheck
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+war {
+    version = '0.1'
+    baseName = 'exceptionexplorer'
+    classifier = 'SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+def glassfishAsadmin = '/usr/local/glassfish-4.1/glassfish/bin/asadmin'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    itestCompile.extendsFrom testCompile
+    itestRuntime.extendsFrom testRuntime
+}
+
+dependencies {
+    providedCompile 'javax:javaee-api:7.0'
+    compile 'org.slf4j:slf4j-api:1.7.9'
+    compile 'org.slf4j:slf4j-jdk14:1.7.9'
+}
+
+sourceSets {
+    itest {
+        java {
+            compileClasspath += main.output //+ test.output
+            runtimeClasspath += main.output // + test.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+task itest(type: Test) {
+    description = 'Runs the integration tests'
+    group = 'verification'
+    testClassesDir = sourceSets.itest.output.classesDir
+    classpath = sourceSets.itest.runtimeClasspath
+}
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
+task deployGlassFish(type: org.gradle.api.tasks.Exec) {
+    dependsOn war
+    commandLine glassfishAsadmin, 'deploy', '--force=true',
+            '--precompilejsp=true',
+            '--name', war.baseName+':'+war.version,
+            '--contextroot', war.baseName,
+            configurations.archives.artifacts.file[0]
+}
+
