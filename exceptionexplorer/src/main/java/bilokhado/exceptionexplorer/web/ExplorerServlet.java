@@ -1,5 +1,9 @@
 package bilokhado.exceptionexplorer.web;
 
+import bilokhado.exceptionexplorer.exception.AppExceptionNoRollback;
+import bilokhado.exceptionexplorer.exception.AppExceptionRollback;
+import bilokhado.exceptionexplorer.exception.AppRuntimeExceptionNoRollback;
+import bilokhado.exceptionexplorer.exception.AppRuntimeExceptionRollback;
 import bilokhado.exceptionexplorer.service.TransactionEjb;
 import bilokhado.exceptionexplorer.service.implementation.BookIdPoolService;
 import bilokhado.exceptionexplorer.service.implementation.TransactionMandatoryEjb;
@@ -88,7 +92,11 @@ public class ExplorerServlet extends HttpServlet {
             for (TransactionEjb callee : calleesArray) {
                 Exception[] exceptionsToTest = new Exception[]{
                         new RuntimeException()
+                        , new AppRuntimeExceptionRollback()
+                        , new AppRuntimeExceptionNoRollback()
                         , new Exception()
+                        , new AppExceptionRollback()
+                        , new AppExceptionNoRollback()
                 };
                 out.print("<table><thead><tr><th>Exception thrown</th><th>Exception got</th><th>");
                 out.print(caller.getType());
